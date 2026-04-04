@@ -33,3 +33,6 @@ Sistemul implementează următoarele funcționalități de bază:
 
 **2. Declanșarea irigării automate**
 * Sistemul citește nivelul de umiditate din sol. Dacă valoarea scade sub pragul setat anterior, display-ul OLED afișează un mesaj: „Nivel Critic. Irigare în curs...”. Microcontrolerul generează un semnal PWM care rotește servomotorul la 90° pentru 5 secunde. Simultan, pe interfața Serială a PC-ului se trimite mesajul `[ALERT] Irigare declansata automat pt profilul Cactus`.
+
+## Arhitectura proiectului
+![Schema arhitecturii](Arhitectura_proiect.jpeg)
