@@ -27,7 +27,12 @@ project(smart_plant C CXX ASM)
 
 pico_sdk_init()
 
-add_executable(smart_plant smart_plant.c)
+
+add_executable(smart_plant
+    smart_plant.c
+    oled/ssd1306.c
+)
+
 
 pico_set_program_name(smart_plant "smart_plant")
 pico_set_program_version(smart_plant "0.1")
@@ -37,18 +42,20 @@ pico_enable_stdio_uart(smart_plant 0)
 pico_enable_stdio_usb(smart_plant 1)
 
 # Toate bibliotecile necesare - UN SINGUR BLOC
-target_link_libraries(smart_plant
-    pico_stdlib
-    hardware_i2c
-    hardware_dma
-    hardware_timer
-    hardware_pwm
-    hardware_adc
-    hardware_uart
+target_link_libraries(smart_plant 
+        pico_stdlib
+        hardware_i2c
+        hardware_dma
+        hardware_timer
+        hardware_pwm
+        hardware_adc
 )
 
 target_include_directories(smart_plant PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}/oled
 )
+
+
 
 pico_add_extra_outputs(smart_plant)
