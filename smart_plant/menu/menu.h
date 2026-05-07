@@ -16,6 +16,7 @@ typedef struct {
     uint32_t    interval_min;
 } ProfilPlanta;
 
+// display-ul poate fi in starea de navigare intre meniuri sau poate fi in desfasurarea unei stari anume
 typedef enum {
     STATE_MENU,
     STATE_CONFIRMED,
