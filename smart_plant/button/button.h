@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 #define BUTTON_PIN      2
-#define DEBOUNCE_MS     50    // ignora semnale sub 50ms
+#define DEBOUNCE_MS     30    // ignora semnale sub 50ms
 #define AUTO_SELECT_MS  10000 // 10 secunde fara apasare = selectare automata
 
 typedef enum {
