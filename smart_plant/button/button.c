@@ -75,7 +75,6 @@ ButtonEvent button_get_event(void) {
     }
 
     // Returneaza eveniment pending de la intrerupere
-    ButtonEvent ev = pending_event;
-    pending_event = BUTTON_NONE;
+    ButtonEvent ev = (ButtonEvent)__atomic_exchange_n((uint8_t*)&pending_event, (uint8_t)BUTTON_NONE, __ATOMIC_SEQ_CST);
     return ev;
 }

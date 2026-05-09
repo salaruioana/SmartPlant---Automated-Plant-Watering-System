@@ -4,14 +4,15 @@
 #include "pico/stdlib.h"
 #include <stdbool.h>
 
-#define BUTTON_PIN      2
-#define DEBOUNCE_MS     30    // ignora semnale sub 50ms
+#define BUTTON_PIN      16
+#define DEBOUNCE_MS     30    // ignora semnale sub 30ms
 #define AUTO_SELECT_MS  10000 // 10 secunde fara apasare = selectare automata
 
-typedef enum {
+//forteaza enum-ul sa fie 1 byte explicit
+typedef enum __attribute__((packed)) {
     BUTTON_NONE,
     BUTTON_SHORT,
-    BUTTON_AUTO_SELECT  // timeout 10 secunde
+    BUTTON_AUTO_SELECT
 } ButtonEvent;
 
 void button_init(void);

@@ -67,8 +67,10 @@ void menu_draw(int umiditate_procent, WateringState watering, int sec_left) {
 
         // actualizeaza pe meniu de cat timp se afla in starea respectiva
         uint64_t elapsed_ms = (time_us_64() - button_get_last_press_time()) / 1000;
-        int auto_sec = (int)((AUTO_SELECT_MS - elapsed_ms) / 1000) + 1;
-        if (auto_sec < 0) auto_sec = 0;
+        int auto_sec = 0;
+        if (elapsed_ms < AUTO_SELECT_MS) {
+            auto_sec = (int)((AUTO_SELECT_MS - elapsed_ms) / 1000) + 1;
+        }
         char countdown[32];
         snprintf(countdown, sizeof(countdown), ">>next  auto:%ds", auto_sec);
         oled_draw_text(0, 54, countdown);
