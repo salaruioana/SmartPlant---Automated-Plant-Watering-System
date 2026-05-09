@@ -56,6 +56,9 @@ smart_plant/
 ├── servo/
 │   ├── servo.h
 │   └── servo.c         — control PWM, logică udare non-blocantă
+│
+├──shared.h             — utilizarea paralelă a celor două procesoare
+│
 └── oled/
     ├── ssd1306.h
     └── ssd1306.c       — driver I2C, framebuffer, font 5x7
@@ -78,18 +81,6 @@ Sistemul utilizează ambele core-uri ale RP2350 pentru a elimina interferența d
 - I2C inițializat și utilizat exclusiv pe Core 1  
 
 ---
-
-Comunicarea între core-uri se face printr-o structură `SharedState` protejată cu `spin_lock_t` din SDK-ul Pico:
-
-```c
-typedef struct {
-    int umiditate;
-    WateringState watering;
-    int sec_left;
-    char profil_nume[16];
-} SharedState;
-```
-
 
 ### Logica principală (Core 0)
 Bucla `while(true)` din Core 0 este non-blocantă — nu conține niciun `sleep()`.  
@@ -116,7 +107,7 @@ Valorile de calibrare implicite sunt cal_dry = 3200 (senzor în aer) și cal_wet
 Servomotorul SG90 simulează un robinet prin rotație între 0° (închis, puls 800µs) și 90° (deschis, puls 2500µs) la 50Hz. Logica de udare este non-blocantă — durata udării se numără prin timestamp, nu prin sleep().
 Între două udări consecutive există un cooldown obligatoriu de 30 de secunde pentru a permite apei să fie absorbită de sol înainte de o nouă decizie.
 
-## Modulul menu și profilele de udare
+### Modulul menu și profilele de udare
 
 Sistemul include 5 profile predefinite pentru tipuri diferite de plante:
 
@@ -137,6 +128,34 @@ Detecția apăsării se face prin întrerupere hardware pe GPIO_IRQ_EDGE_FALL ș
 ### Modulul ssd1306 și logica de afișare pe display
 
 Driver complet pentru display-ul OLED 128×64px prin I2C. Folosește un framebuffer de 1024 bytes în RAM și un font 5×7 pixeli pentru caractere ASCII. Suportă text normal, text 2× mărit și bară de progres. Întregul framebuffer este trimis la display printr-un singur transfer I2C la fiecare refresh.
+
+### Modulul `shared.h` — comunicare între Core-uri
+
+Modulul `shared.h` implementează mecanismul de comunicare între Core 0 și Core 1 printr-un **Shared State** protejat cu **spinlock hardware**. Acesta permite schimb sigur de date între logica de control (Core 0) și interfața OLED (Core 1), fără race conditions.
+
+### SharedState — memorie comună
+
+```c
+typedef struct {
+    int umiditate;
+    WateringState watering;
+    int sec_left;
+    char profil_nume[16];
+} SharedState;
+```
+
+Accesul la `g_shared` este protejat cu un spinlock:
+
+```c
+extern SharedState g_shared;
+extern spin_lock_t *g_lock;
+```
+
+Spinlock-ul asigură acces atomic între core-uri: un singur core poate citi/scrie la un moment dat, celălalt core așteaptă eliberarea lock-ului.
+
+#### Sincronizare
+
+CORE 0  ── shared_write() ──► [ g_shared + spinlock ] ◄── shared_read ── CORE 1
 
 ### Monitorizare la distanță (UART/USB)
 
