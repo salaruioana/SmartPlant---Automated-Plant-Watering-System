@@ -1,3 +1,16 @@
+# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
+if(WIN32)
+    set(USERHOME $ENV{USERPROFILE})
+else()
+    set(USERHOME $ENV{HOME})
+endif()
+set(sdkVersion 2.2.0)
+set(toolchainVersion 14_2_Rel1)
+set(picotoolVersion 2.2.0-a4)
+set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
+if (EXISTS ${picoVscode})
+    include(${picoVscode})
+endif()
 # Generated Cmake Pico project file
 
 cmake_minimum_required(VERSION 3.13)
@@ -27,35 +40,40 @@ project(smart_plant C CXX ASM)
 
 pico_sdk_init()
 
-
 add_executable(smart_plant
     smart_plant.c
     oled/ssd1306.c
+    button/button.c
+    menu/menu.c
+    sensor/sensor.c
+    servo/servo.c
 )
-
 
 pico_set_program_name(smart_plant "smart_plant")
 pico_set_program_version(smart_plant "0.1")
 
-# USB pentru printf/debug, UART dezactivat pe stdio
 pico_enable_stdio_uart(smart_plant 0)
 pico_enable_stdio_usb(smart_plant 1)
 
-# Toate bibliotecile necesare - UN SINGUR BLOC
-target_link_libraries(smart_plant 
-        pico_stdlib
-        hardware_i2c
-        hardware_dma
-        hardware_timer
-        hardware_pwm
-        hardware_adc
+target_link_libraries(smart_plant
+    pico_stdlib
+    pico_multicore
+    hardware_sync
+    hardware_i2c
+    hardware_dma
+    hardware_timer
+    hardware_pwm
+    hardware_adc
+    hardware_uart
 )
 
 target_include_directories(smart_plant PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}
     ${CMAKE_CURRENT_LIST_DIR}/oled
+    ${CMAKE_CURRENT_LIST_DIR}/button
+    ${CMAKE_CURRENT_LIST_DIR}/menu
+    ${CMAKE_CURRENT_LIST_DIR}/sensor
+    ${CMAKE_CURRENT_LIST_DIR}/servo
 )
-
-
 
 pico_add_extra_outputs(smart_plant)
