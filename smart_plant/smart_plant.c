@@ -1,27 +1,28 @@
 #include <stdio.h>
+#include <string.h>
 #include "pico/stdlib.h"
+#include "pico/multicore.h"
 #include "hardware/i2c.h"
 #include "hardware/uart.h"
+#include "hardware/sync.h"
 #include "ssd1306.h"
 #include "button.h"
 #include "menu.h"
 #include "sensor.h"
 #include "servo.h"
+#include "shared.h"
 
 #define I2C_PORT    i2c0
 #define I2C_SDA_PIN 4
 #define I2C_SCL_PIN 5
 
-// UART
-#define UART_ID      uart0
-#define UART_TX_PIN  0
-#define UART_RX_PIN  1
+#define UART_ID     uart0
+#define UART_TX_PIN 0
+#define UART_RX_PIN 1
 
-int main() {
-    stdio_init_all();
-    sleep_ms(3000);
-    printf("Smart Plant starting...\n");
-
+// CORE 1 — doar display OLED
+// se actualizează la 0.5 secunde
+void core1_entry(void) {
     i2c_init(I2C_PORT, 400 * 1000);
     gpio_set_function(I2C_SDA_PIN, GPIO_FUNC_I2C);
     gpio_set_function(I2C_SCL_PIN, GPIO_FUNC_I2C);
@@ -29,28 +30,49 @@ int main() {
     gpio_pull_up(I2C_SCL_PIN);
     oled_init(I2C_PORT);
 
+    while (true) {
+        SharedState s = shared_read();
+        menu_draw(s.umiditate, s.watering, s.sec_left);
+        sleep_ms(500);
+    }
+}
+
+// CORE 0 — logica principala
+int main(void) {
+    stdio_init_all();
+    sleep_ms(3000);
+    printf("Smart Plant starting...\n");
+
+    // Spinlock inainte de lansarea Core 1
+    g_lock = spin_lock_init(spin_lock_claim_unused(true));
+
+    // Lanseaza Core 1 — I2C si OLED se init acolo
+    multicore_launch_core1(core1_entry);
+
+    // Init UART
     uart_init(UART_ID, 115200);
     gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
     gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
 
+    // Init module Core 0
     sensor_init();
-    // button_init();  <-- scos
+    button_init(); 
     menu_init();
     sleep_ms(1000);
     servo_init();
 
     printf("Toate initializate!\n");
 
-    // Selecteaza automat primul profil fara buton
     menu_handle_event(BUTTON_AUTO_SELECT);
-
+    
     uint64_t last_check_time = 0;
     uint64_t last_uart_time  = 0;
+    static int umiditate = 0;
 
     while (true) {
         uint64_t now = time_us_64();
 
-        static int umiditate = 0;
+        // 1. Citeste umiditate la fiecare 2 secunde
         if (now - last_check_time > 2000000) {
             if (watering_get_state() != WATERING_ACTIVE) {
                 umiditate = sensor_get_humidity();
@@ -58,8 +80,13 @@ int main() {
             last_check_time = now;
         }
 
-        // buton scos complet
+        // 2. Buton — decommenteaza cand ai buton nou
+        ButtonEvent ev = button_get_event();
+        if (ev != BUTTON_NONE) {
+            menu_handle_event(ev);
+        }
 
+        // 3. Logica udare
         if (menu_get_state() == STATE_CONFIRMED) {
             const ProfilPlanta *p = menu_get_active_profile();
             WateringState ws = watering_get_state();
@@ -75,20 +102,23 @@ int main() {
             }
         }
 
-        static uint64_t last_display_time = 0;
-        bool servo_activ = (watering_get_state() == WATERING_ACTIVE);
-        uint64_t display_interval = servo_activ ? 2000000 : 500000;
-
-        if (now - last_display_time > display_interval) {
-            menu_draw(umiditate, watering_get_state(), watering_get_seconds_left());
-            last_display_time = now;
+        // 4. Actualizeaza shared_state pentru Core 1
+        {
+            const ProfilPlanta *p = menu_get_active_profile();
+            shared_write(
+                umiditate,
+                watering_get_state(),
+                watering_get_seconds_left(),
+                p ? p->nume : "niciunul"
+            );
         }
 
+        // 5. UART la fiecare 5 secunde
         if (now - last_uart_time > 5000000) {
             const ProfilPlanta *p = menu_get_active_profile();
             char buf[128];
             int a_udat = (watering_get_state() == WATERING_ACTIVE) ? 1 : 0;
-            int sec = watering_get_seconds_left();
+            int sec    = watering_get_seconds_left();
             snprintf(buf, sizeof(buf),
                 "{\"umiditate\":%d,\"profil\":\"%s\","
                 "\"udare\":%d,\"sec_left\":%d}\n",
@@ -100,5 +130,7 @@ int main() {
             printf("%s", buf);
             last_uart_time = now;
         }
+
+        tight_loop_contents();
     }
 }
