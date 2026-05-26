@@ -36,7 +36,7 @@ Sistemul implementează următoarele funcționalități de bază:
 * Sistemul citește umiditatea la fiecare 2 secunde. Când valoarea scade sub pragul profilului activ, servomotorul se rotește la 90° pentru durata configurată, simulând deschiderea unui robinet. Display-ul afișează un timer vizibil cu bara de progres. Simultan, pe serial se trimite un mesaj JSON cu "udare":1. După terminarea udării, sistemul intră în cooldown de 30 de secunde.
 
 ## Arhitectura proiectului
-![Schema arhitecturii](Arhitectura_proiect.jpeg)
+![Schema arhitecturii](docs/Arhitectura_proiect.jpeg)
 
 ## Arhitectura Software
 
@@ -177,3 +177,5 @@ while True:
     date = json.loads(linie)
     print(f"Umiditate: {date['umiditate']}%  Profil: {date['profil']}")
 ```
+## Schema electrică a proiectului
+![Schema electrica Smart Plant Watering](docs/imagine_schema.png)
