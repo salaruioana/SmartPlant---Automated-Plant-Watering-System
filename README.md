@@ -178,4 +178,4 @@ while True:
     print(f"Umiditate: {date['umiditate']}%  Profil: {date['profil']}")
 ```
 ## Schema electrică a proiectului
-![Schema electrica](docs/imagine_schema.png)
+![Schema electrica Smart Plant Watering](docs/imagine_schema.png)
