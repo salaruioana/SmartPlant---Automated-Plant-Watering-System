@@ -181,6 +181,21 @@ Pentru monitorizare rapidă în timpul dezvoltării, datele au fost urmărite di
 ## Schema electrică a proiectului
 ![Schema electrica Smart Plant Watering](docs/imagine_schema.png)
 
+### Setup Hardware
+Aici este o imagine cu configurarea fizică a proiectului:
+
+![Setup-ul proiectului](docs/poza_setup.jpg)
+
+### Demonstrație Udare
+Mai jos puteți urmări clipurile video cu procesul de udare automată:
+
+#### Test Udare 1
+<video src="docs/video_udare1.mp4" width="100%" controls></video>
+
+#### Test Udare 2
+<video src="docs/video_udare2.mp4" width="100%" controls></video>
+
+
 
 
 ## Bibliografie
