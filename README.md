@@ -243,6 +243,27 @@ Mai jos puteți urmări clipurile video cu procesul de udare automată:
 ![smartplant_software_bloc_core1_shared](docs/smartplant_software_bloc_core1_shared.svg)
 
 > **Disclaimer:** Aceste scheme au fost realizate cu ajutorul inteligentei artificiale.
+## Contribuțiile Membrilor Echipei
+### Șalaru Ioana
+
+* Documentație: redactarea README și descrierea arhitecturii software
+* Logica principală (smart_plant.c): bucla non-blocantă pe Core 0, gestionarea timpilor prin time_us_64(), transmisia UART/USB în format JSON
+* Modulul button: detecția apăsării prin întrerupere hardware GPIO, debounce software, logica de auto-selectare după 10 secunde
+* Modulul sensor: citire ADC prin DMA cu medie mobilă pe 32 de sample-uri, calibrare, detecție senzor deconectat
+* Modulul menu: mașina de stări pentru navigarea între profile, logica de confirmare profil și invocarea interfeței pe OLED
+* Arhitectura dual-core: împărțirea responsabilităților între Core 0 și Core 1, mecanismul de comunicare prin SharedState protejat cu spinlock
+* Conexiunile între Raspberry Pi Pico 2W, senzorul de umiditate, servomotor și display OLED
+* Tratarea erorilor
+
+
+Panaite Elena-Alexandra
+
+* Modulul ssd1306: driver complet I2C pentru display-ul OLED 128×64px, framebuffer, font 5×7, text normal și 2×, bară de progres
+* Modulul servo: control PWM pentru servomotorul SG90, logica de udare non-blocantă cu cooldown de 30 de secunde
+* Schema arhitecturii proiectului: diagrama bloc a componentelor software și hardware
+* Schema electrică
+* Documentare foto-video
+* Prezentarea PowerPoint
 
 ## Bibliografie
 
