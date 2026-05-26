@@ -29,7 +29,8 @@ void servo_init(void) {
 
     // 50Hz: clkdiv=125, wrap=20000 → 1 tick = 1us
     pwm_config cfg = pwm_get_default_config();
- pwm_config_set_wrap(&cfg, 20000);
+    pwm_config_set_clkdiv(&cfg, 125.0f);  // 125MHz / 125 = 1MHz → 1 tick = 1µs
+    pwm_config_set_wrap(&cfg, 20000);
     pwm_init(pwm_slice, &cfg, true);
 
 

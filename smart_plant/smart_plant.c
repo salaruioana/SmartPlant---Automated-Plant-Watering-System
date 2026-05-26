@@ -20,6 +20,10 @@
 #define UART_TX_PIN 0
 #define UART_RX_PIN 1
 
+// Definitii globale pentru shared state (declarate extern in shared.h)
+SharedState g_shared = {0};
+spin_lock_t *g_lock = NULL;
+
 // CORE 1 — doar display OLED
 // se actualizează la 0.5 secunde
 void core1_entry(void) {
