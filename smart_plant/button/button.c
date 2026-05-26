@@ -5,11 +5,11 @@
 #include <stdbool.h>
 
 // marcheaza timpul la care a inceput apasarea butonului
-static volatile uint64_t press_start    = 0;
+static volatile uint64_t press_start = 0;
 // marcheaza timpul ultimei apasari de buton valide - util pentru masurarea celor 10 secunde pana la stabilire mod
 static volatile uint64_t last_press_time = 0;
 // starea butonului la un moment dat
-static volatile bool     pressed        = false;
+static volatile bool pressed = false;
 // tipul de eveniment care trebuie tratat de componenta ce foloseste functionalitatea butonului(display-ul)
 static volatile ButtonEvent pending_event = BUTTON_NONE;
 
