@@ -190,10 +190,10 @@ Aici este o imagine cu configurarea fizică a proiectului:
 Mai jos puteți urmări clipurile video cu procesul de udare automată:
 
 #### Test Udare 1
-<video src="docs/video_udare1.mp4" width="100%" controls></video>
+<video src="https://github.tuiasi.ro/SM26/BerryBusy/raw/main/docs/video_udare1.mp4" width="100%" controls></video>
 
 #### Test Udare 2
-<video src="docs/video_udare2.mp4" width="100%" controls></video>
+<video src="https://github.tuiasi.ro/SM26/BerryBusy/raw/main/docs/video_udare2.mp4" width="100%" controls></video>
 
 
 
