@@ -256,7 +256,7 @@ Mai jos puteți urmări clipurile video cu procesul de udare automată:
 * Tratarea erorilor
 
 
-Panaite Elena-Alexandra
+### Panaite Elena-Alexandra
 
 * Modulul ssd1306: driver complet I2C pentru display-ul OLED 128×64px, framebuffer, font 5×7, text normal și 2×, bară de progres
 * Modulul servo: control PWM pentru servomotorul SG90, logica de udare non-blocantă cu cooldown de 30 de secunde
