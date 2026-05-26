@@ -196,9 +196,9 @@ Mai jos puteți urmări clipurile video cu procesul de udare automată:
 
 ### Schema software
 
-![docs/smartplant_software_bloc_core0](smartplant_software_bloc_core0.svg)
+![smartplant_software_bloc_core0](docs/smartplant_software_bloc_core0.svg)
 
-![docs/smartplant_software_bloc_core1_shared](smartplant_software_bloc_core1_shared.svg)
+![smartplant_software_bloc_core1_shared](docs/smartplant_software_bloc_core1_shared.svg)
 
 > **Disclaimer:** Aceste scheme au fost realizate cu ajutorul inteligentei artificiale.
 
