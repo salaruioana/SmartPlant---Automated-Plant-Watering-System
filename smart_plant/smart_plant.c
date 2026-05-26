@@ -49,6 +49,7 @@ int main(void) {
 
     // Spinlock inainte de lansarea Core 1
     g_lock = spin_lock_init(spin_lock_claim_unused(true));
+    ASSERT(g_lock != NULL, "Spinlock init failed");
 
     // Lanseaza Core 1 — I2C si OLED se init acolo
     multicore_launch_core1(core1_entry);
@@ -59,7 +60,7 @@ int main(void) {
     gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
 
     // Init module Core 0
-    sensor_init();
+    ASSERT(sensor_init(), "Sensor init failed");
     button_init(); 
     menu_init();
     sleep_ms(1000);
@@ -79,7 +80,9 @@ int main(void) {
         // 1. Citeste umiditate la fiecare 2 secunde
         if (now - last_check_time > 2000000) {
             if (watering_get_state() != WATERING_ACTIVE) {
-                umiditate = sensor_get_humidity();
+                int val = sensor_get_humidity();
+                if (val >= 0) umiditate = val;
+                else printf("WARN: citire senzor ignorata\n");
             }
             last_check_time = now;
         }

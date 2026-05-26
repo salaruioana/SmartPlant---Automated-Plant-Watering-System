@@ -2,6 +2,8 @@
 #include <string.h>
 #include "pico/sync.h"
 #include "servo.h"
+#define ASSERT(cond, msg) \
+    do { if (!(cond)) { printf("EROARE: %s (linia %d)\n", msg, __LINE__); panic(msg); } } while(0)
 
 
 // implementează comunicarea sigură între Core 0 și Core 1.

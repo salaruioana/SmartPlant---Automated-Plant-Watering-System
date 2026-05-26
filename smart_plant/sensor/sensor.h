@@ -10,7 +10,7 @@
 #define SENSOR_ADC_CH    0
 #define NUM_SAMPLES      32  // medie mobila pe 32 citiri
 
-void sensor_init(void);
+bool sensor_init(void);
 int  sensor_get_humidity(void);   // returneaza 0-100%
 int  sensor_get_raw(void);        // returneaza valoare bruta ADC
 

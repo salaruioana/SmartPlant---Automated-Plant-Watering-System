@@ -1,4 +1,5 @@
 #include "sensor.h"
+#include "shared.h"
 #include <stdio.h>
 
 // Buffer DMA - NUM_SAMPLES citiri ADC
@@ -17,7 +18,7 @@ ADC produce valori → FIFO → DMA le mută → buffer
                   DREQ (semnal)
 */
 
-void sensor_init(void) {
+bool sensor_init(void) {
     // Init ADC
     adc_init();
     adc_gpio_init(SENSOR_PIN);
@@ -42,9 +43,11 @@ void sensor_init(void) {
 
     // Claim DMA channel
     dma_chan = dma_claim_unused_channel(true);
+    ASSERT(dma_chan >= 0, "DMA channel unavailable");
 
     printf("Sensor initializat pe GP%d, DMA canal %d\n", 
            SENSOR_PIN, dma_chan);
+    return true;
 }
 
 // Declanseaza o citire DMA de NUM_SAMPLES sample-uri
@@ -97,6 +100,11 @@ int sensor_get_raw(void) {
 
 int sensor_get_humidity(void) {
     int raw = sensor_get_raw();
+
+    if (raw == 0 || raw == 4095) {
+        printf("WARN: senzor posibil deconectat (raw=%d)\n", raw);
+        return -1;  
+    }
 
     // Mapeaza raw la procente folosind valorile de calibrare
     // cal_dry = valoare cand e uscat (procent mic)
