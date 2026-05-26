@@ -7,6 +7,17 @@
 ## Descrierea Proiectului
 SmartPlant este un sistem automatizat, bazat pe Raspberry Pi Pico 2w, creat pentru a monitoriza starea de sănătate a plantelor de apartament. Dispozitivul măsoară umiditatea solului și decide dacă este necesară irigarea. Interfața oferă feedback vizual printr-un display OLED, iar execuția irigării este simulată mecanic folosind un servomotor.
 
+### Obiectiv general
+Proiectarea și implementarea unui sistem embedded automat pentru monitorizarea și irigarea plantelor de apartament, utilizând Raspberry Pi Pico 2W și Pico SDK în C.
+### Obiective specifice:
+
+* Achiziția fiabilă a umidității solului prin ADC + DMA cu filtrare prin medie mobilă pe 32 de eșantioane
+* Implementarea unei arhitecturi software non-blocante bazate pe timestamp-uri (time_us_64())
+* Exploatarea paralelismului dual-core al RP2350 pentru separarea logicii de control (Core 0) de afișare (Core 1)
+* Realizarea unei interfețe utilizator funcționale pe display OLED 128×64 cu meniu de configurare și 5 profile de udare
+* Controlul unui servomotor SG90 prin semnal PWM la 50 Hz pentru controlarea unui robinet
+* Monitorizarea la distanță prin USB serial (CDC) cu date JSON în timp real
+
 ---
 
 ## Cerințe Funcționale
@@ -165,17 +176,12 @@ Pentru monitorizare rapidă în timpul dezvoltării, datele au fost urmărite di
 ```json
 {"umiditate":45,"profil":"Temperat","udare":0,"sec_left":0}
 ```
+![Mesaje primite prin interfata seriala](docs/consola.png)
 
-Pentru logging sau vizualizare avansată pe PC se poate rula și un script Python:
-
-```python
-import serial, json
-
-port = serial.Serial('COM6', 115200)
-while True:
-    linie = port.readline().decode('utf-8').strip()
-    date = json.loads(linie)
-    print(f"Umiditate: {date['umiditate']}%  Profil: {date['profil']}")
-```
 ## Schema electrică a proiectului
 ![Schema electrica Smart Plant Watering](docs/imagine_schema.png)
+
+
+
+## Bibliografie
+
