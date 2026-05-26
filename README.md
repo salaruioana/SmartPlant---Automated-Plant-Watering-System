@@ -177,3 +177,5 @@ while True:
     date = json.loads(linie)
     print(f"Umiditate: {date['umiditate']}%  Profil: {date['profil']}")
 ```
+## Schema electrică a proiectului
+![Schema electrica](docs/imagine_schema.png)
