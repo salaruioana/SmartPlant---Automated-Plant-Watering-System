@@ -190,13 +190,27 @@ Aici este o imagine cu configurarea fizică a proiectului:
 Mai jos puteți urmări clipurile video cu procesul de udare automată:
 
 #### Test Udare 1
-<video src="https://github.tuiasi.ro/SM26/BerryBusy/raw/main/docs/video_udare1.mp4" width="100%" controls></video>
+[ Click aici pentru a vedea Clipul 1 (video_udare1.mp4)](docs/video_udare1.mp4)
 
 #### Test Udare 2
-<video src="https://github.tuiasi.ro/SM26/BerryBusy/raw/main/docs/video_udare2.mp4" width="100%" controls></video>
-
-
-
+[ Click aici pentru a vedea Clipul 2 (video_udare2.mp4)](docs/video_udare2.mp4)
 
 ## Bibliografie
 
+[1] Raspberry Pi Ltd., "Raspberry Pi Pico 2 W Datasheet," Nov. 2024.
+    [Online]. Available: https://datasheets.raspberrypi.com/picow/pico-2-w-datasheet.pdf
+
+[2] Raspberry Pi Ltd., "RP2350 Datasheet," 2024.
+    [Online]. Available: https://datasheets.raspberrypi.com/rp2350/rp2350-datasheet.pdf
+
+[3] Raspberry Pi Ltd., "Raspberry Pi Pico C/C++ SDK," 2024.
+    [Online]. Available: https://datasheets.raspberrypi.com/pico/raspberry-pi-pico-c-sdk.pdf
+
+[4] TowerPro, "SG90 9g Micro Servo Datasheet," Tower Pro Co., Ltd.
+    [Online]. Available: http://www.handsontec.com/dataspecs/motor_fan/SG90-Servo.pdf
+
+[5] Solomon Systech, "SSD1306 128x64 Dot Matrix OLED Driver with Controller," v1.1.
+    [Online]. Available: https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf
+
+[6] DFRobot / AZ-Delivery, "Capacitive Soil Moisture Sensor V1.2 (HW-101) Specification."
+    [Online]. Available: https://www.datocms-assets.com/28969/1662716326-hw-101-hw-moisture-sensor-v1-0.pdf
