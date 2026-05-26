@@ -175,10 +175,52 @@ Pentru monitorizare rapidă în timpul dezvoltării, datele au fost urmărite di
 ```
 ![Mesaje primite prin interfata seriala](docs/consola.png)
 
+## Tratarea Erorilor
+
+Sistemul implementează un mecanism simplu și robust de tratare a erorilor, adaptat pentru un dispozitiv embedded.
+
+Definit în `shared.h`, macro-ul `ASSERT` oprește sistemul curat atunci când o condiție critică nu este îndeplinită:
+
+```c
+#define ASSERT(cond, msg) \
+    do { if (!(cond)) { printf("EROARE: %s (linia %d)\n", msg, __LINE__); panic(msg); } } while(0)
+```
+
+La declanșare, afișează mesajul de eroare și numărul liniei prin UART/USB, apoi apelează panic() din Pico SDK, care oprește execuția și face LED-ul onboard să clipească rapid, un semnal vizibil că sistemul a întâmpinat o problemă critică.
+
+Este folosit exclusiv pentru erori nerecuperabile în faza de inițializare:
+```c
+g_lock = spin_lock_init(spin_lock_claim_unused(true));
+ASSERT(g_lock != NULL, "Spinlock init failed");
+
+ASSERT(sensor_init(), "Sensor init failed");
+```
+
+La inițializarea senzorului, canalul DMA este revendicat cu o verificare explicită; dacă hardware-ul nu are canale disponibile, sistemul oprește imediat execuția cu un mesaj clar:
+```c
+dma_chan = dma_claim_unused_channel(false);
+ASSERT(dma_chan >= 0, "DMA channel unavailable");
+```
+Valorile ADC extreme de 0 sau 4095 sunt imposibile în condiții normale și indică un senzor deconectat sau defect. În acest caz, funcția sensor_get_humidity() returnează -1, fără a opri sistemul:
+```c
+if (raw == 0 || raw == 4095) {
+    printf("WARN: senzor posibil deconectat (raw=%d)\n", raw);
+    return -1;
+}
+```
+
+Bucla principală ignoră citirile invalide și păstrează ultima valoare validă înregistrată, astfel încât display-ul și logica de udare să nu fie afectate în mod eronat:
+```c
+int val = sensor_get_humidity();
+if (val >= 0) {
+    umiditate = val;
+} else {
+    printf("WARN: citire senzor ignorata\n");
+}
+```
+
 ## Schema electrică a proiectului
 ![Schema electrica Smart Plant Watering](docs/imagine_schema.png)
-
-##
 
 ### Setup Hardware
 Aici este o imagine cu configurarea fizică a proiectului:
