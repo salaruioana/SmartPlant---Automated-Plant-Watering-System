@@ -7,17 +7,14 @@
 ## Descrierea Proiectului
 SmartPlant este un sistem automatizat, bazat pe Raspberry Pi Pico 2w, creat pentru a monitoriza starea de sănătate a plantelor de apartament. Dispozitivul măsoară umiditatea solului și decide dacă este necesară irigarea. Interfața oferă feedback vizual printr-un display OLED, iar execuția irigării este simulată mecanic folosind un servomotor.
 
-### Obiectiv general
+### Obiectiv general 
 Proiectarea și implementarea unui sistem embedded automat pentru monitorizarea și irigarea plantelor de apartament, utilizând Raspberry Pi Pico 2W și Pico SDK în C.
-### Obiective specifice:
 
-* Achiziția fiabilă a umidității solului prin ADC + DMA cu filtrare prin medie mobilă pe 32 de eșantioane
-* Implementarea unei arhitecturi software non-blocante bazate pe timestamp-uri (time_us_64())
-* Exploatarea paralelismului dual-core al RP2350 pentru separarea logicii de control (Core 0) de afișare (Core 1)
-* Realizarea unei interfețe utilizator funcționale pe display OLED 128×64 cu meniu de configurare și 5 profile de udare
-* Controlul unui servomotor SG90 prin semnal PWM la 50 Hz pentru controlarea unui robinet
-* Monitorizarea la distanță prin USB serial (CDC) cu date JSON în timp real
-
+## Utilitate 
+Proiectul **SmartPlant** rezolvă problema îngrijirii plantelor în lipsa utilizatorului (ex: în timpul concediilor) și optimizează consumul de resurse prin:
+* **Automatizare completă:** Elimină eroarea umană (uitarea udării sau udarea excesivă) prin declanșarea pompei doar atunci când senzorul raportează un deficit de umiditate în sol.
+* **Eficiență hidrică:** Previne risipa de apă și putrezirea rădăcinilor plantelor prin aplicarea unor cantități controlate de apă, adaptate strict necesarului setat în cod.
+* **Monitorizare continuă:** Sistemul rulează non-stop (grație consumului redus al Raspberry Pi Pico 2W), asigurând un microclimat stabil pentru plantă.
 ---
 
 ## Cerințe Funcționale
@@ -181,6 +178,8 @@ Pentru monitorizare rapidă în timpul dezvoltării, datele au fost urmărite di
 ## Schema electrică a proiectului
 ![Schema electrica Smart Plant Watering](docs/imagine_schema.png)
 
+##
+
 ### Setup Hardware
 Aici este o imagine cu configurarea fizică a proiectului:
 
@@ -194,6 +193,14 @@ Mai jos puteți urmări clipurile video cu procesul de udare automată:
 
 #### Test Udare 2
 [ Click aici pentru a vedea Clipul 2 (video_udare2.mp4)](docs/video_udare2.mp4)
+
+### Schema software
+
+![docs/smartplant_software_bloc_core0](smartplant_software_bloc_core0.svg)
+
+![docs/smartplant_software_bloc_core1_shared](smartplant_software_bloc_core1_shared.svg)
+
+> **Disclaimer:** Aceste scheme au fost realizate cu ajutorul inteligentei artificiale.
 
 ## Bibliografie
 
