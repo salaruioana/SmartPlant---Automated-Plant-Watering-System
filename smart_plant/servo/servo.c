@@ -114,8 +114,8 @@ void watering_reset(void) {
 
 
 //pentru a evita multe udari consecutive neintrerupt - lasam apa sa intre in sol
-bool watering_cooldown_active(void) {
+bool watering_cooldown_active(uint32_t interval_ms) {
     if (last_watering_end_time == 0) return false;
     uint64_t elapsed_ms = (time_us_64() - last_watering_end_time) / 1000;
-    return elapsed_ms < MIN_INTERVAL_BETWEEN_WATERINGS_MS;
+    return elapsed_ms < interval_ms;
 }

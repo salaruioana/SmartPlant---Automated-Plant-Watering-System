@@ -5,11 +5,11 @@
 
 // vector cu meniurile posibile - se observa usurinta de extindere a aplicatiei
 const ProfilPlanta profiluri[NUM_PROFILES] = {
-    {"Arid",        "cactus, suculente",   15,  2,  1440},
-    {"Mediteran","lavanda, rozmarin",   30,  4,   720},
-    {"Temperat",    "monstera, pothos",    45,  6,   480},
-    {"Tropical",    "orhidee, ferigi",     60,  8,   240},
-    {"Acvatic",     "nufar, papirus",      80, 15,    60},
+    {"Arid",        "cactus, suculente",   15,  2,  100},
+    {"Mediteran","lavanda, rozmarin",   30,  4,   70},
+    {"Temperat",    "monstera, pothos",    45,  6,   40},
+    {"Tropical",    "orhidee, ferigi",     60,  8,   30},
+    {"Acvatic",     "nufar, papirus",      80, 15,    15},
 };
 
 // indexul folosit in functionalitatea de navigare printre meniuri

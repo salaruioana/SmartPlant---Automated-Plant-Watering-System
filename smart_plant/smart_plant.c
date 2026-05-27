@@ -97,7 +97,7 @@ int main(void) {
             const ProfilPlanta *p = menu_get_active_profile();
             WateringState ws = watering_get_state();
 
-            if (ws == WATERING_IDLE && !watering_cooldown_active() && umiditate < p->prag_uscat) {
+            if (ws == WATERING_IDLE && !watering_cooldown_active(p->interval_min*1000) && umiditate < p->prag_uscat) {
                 watering_start(p->durata_udare);
             }
 

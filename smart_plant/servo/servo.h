@@ -37,7 +37,7 @@ void watering_update(void);           // apelat in bucla principala
 WateringState watering_get_state(void);
 int watering_get_seconds_left(void);  // secunde ramase
 void watering_reset(void);
-bool watering_cooldown_active(void);
+bool watering_cooldown_active(uint32_t interval_ms);
 
 
 #endif
