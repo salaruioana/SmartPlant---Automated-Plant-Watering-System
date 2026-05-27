@@ -17,7 +17,7 @@ static int current_index = 0;
 // indexul folosit pentru a marca starea stabila activa
 static int active_index  = 0;
 // meniul poate fi in starea de navigare prin optiuni sau poate fi programat intr-un mod
-static AppState state    = STATE_MENU;
+static AppState state = STATE_MENU;
 
 void menu_init(void) {
     current_index = 0;
@@ -61,8 +61,7 @@ void menu_draw(int umiditate_procent, WateringState watering, int sec_left) {
 
         char buf[32];
         //snprintf function in C is used to write formatted output to a sized buffer.
-        snprintf(buf, sizeof(buf), "Prag:%d%%  Udare:%ds",
-                 p->prag_uscat, p->durata_udare);
+        snprintf(buf, sizeof(buf), "Prag:%d%%  Udare:%ds",p->prag_uscat, p->durata_udare);
         oled_draw_text(0, 42, buf);
 
         // actualizeaza pe meniu de cat timp se afla in starea respectiva

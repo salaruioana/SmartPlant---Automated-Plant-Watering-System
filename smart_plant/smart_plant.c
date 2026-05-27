@@ -87,7 +87,6 @@ int main(void) {
             last_check_time = now;
         }
 
-        // 2. Buton — decommenteaza cand ai buton nou
         ButtonEvent ev = button_get_event();
         if (ev != BUTTON_NONE) {
             menu_handle_event(ev);
